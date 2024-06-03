@@ -1,0 +1,174 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+a, li{
+    list-style: none;
+    text-decoration: none;
+}
+.witdh-page{    
+    max-width: 1260px;
+    margin: 0 auto;
+    
+}
+
+h1{
+    text-align: center;
+}
+nav{
+    background-color: darkblue;
+    padding: 3rem;
+
+    ul{
+        display: flex;
+        justify-content: space-evenly;
+    }
+}
+
+nav ul a{
+    color: aliceblue;
+}
+/*======================== Formulrio ==============================*/ 
+form{
+    max-width: 400px;
+    margin: 0 auto;
+    padding-top:40px ;
+
+    div{
+        display: flex;
+        flex-direction: column;
+        
+        padding: 1rem;
+    }
+}
+
+form fieldset div {
+    label{
+        
+        padding-bottom: 0.5rem;
+        color: rgb(72, 90, 41)   
+    };
+    input{
+        width: 20rem;
+        padding: 0.25rem
+    };
+    
+    
+}
+
+form fieldset div:last-child{
+    display: flex;
+    gap: 20px;
+}
+
+/* ====================== TABLA ====================== */
+
+.container_table{
+    max-width: 1260px;
+    margin: 0 auto;
+
+    table {
+        width: 1260px;
+        border-collapse: collapse;
+        margin-top: 3rem;
+    }
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #d2d2d2;
+}
+
+/*================ Informacion del vehiculo ================ */
+
+.container_info{
+    display: grid;
+    grid-template-columns: 8fr 4fr
+
+}
+.container_info section{
+    h2{
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+}
+
+.container_info .card_img{
+
+}
+
+
+.container_info .card_info{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #e6e6e6;
+    padding: 1rem;
+
+    img{
+        width: 3rem;
+    }
+
+}
+
+.container_info .caracteristicas{
+    ul{
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    li{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+.container_info .card_info .precio{
+    padding-top: 1rem;
+
+    span{
+        font-size: 2rem;
+        font-weight: bold;
+        background-color: #6ed2e1e2;
+        padding: 0.5rem;
+    }
+}
+
+.container_info .card_info .bait{
+    background-color: black;
+    color: #6ed2e1;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* ================== CARDS MODELOS =================== */
+
+.card_general{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem
+
+}
+.card_general article{
+    img{
+        width: 100%;
+    }
+}
+
+.err404{
+    color: rgb(139, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10rem;
+}
+
+

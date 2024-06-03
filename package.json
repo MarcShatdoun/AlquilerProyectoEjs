@@ -1,0 +1,28 @@
+{
+  "name": "proyecto_alquiler",
+  "version": "1.0.0",
+  "description": "Alquiler proyecto",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarcShatdoun/proyecto_alquiler.git"
+  },
+  "keywords": [
+    "alquiler"
+  ],
+  "author": "Marc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarcShatdoun/proyecto_alquiler/issues"
+  },
+  "homepage": "https://github.com/MarcShatdoun/proyecto_alquiler#readme",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mysql": "^2.18.1"
+  }
+}

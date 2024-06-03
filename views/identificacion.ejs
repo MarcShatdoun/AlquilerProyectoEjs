@@ -1,0 +1,22 @@
+<%- include ("./templates/head") %>
+<body>
+
+    <form action="/verificacion" method="post">
+        <fieldset>
+            <legend>Identifiquese</legend>
+            <div>
+                <label for="dni">Ingrese su dni</label>
+                <input type="text" name="dni" id="dni">
+            </div>
+           
+            <input type="hidden" name="id" value="<%= idmodelo %>">
+            <div>
+                <input type="submit" value="enviar">
+                <input type="reset" value="borrar">
+            </div>
+        </fieldset>
+    </form>
+   
+    
+</body>
+</html>

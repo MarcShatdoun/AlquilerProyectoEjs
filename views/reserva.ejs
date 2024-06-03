@@ -1,0 +1,26 @@
+<% include('./templates/head') %>
+<body>
+    <p>Aqui habra una reserva</p>
+
+    <% datosCliente.forEach(cliente => { %>
+    <p>Hola <%= cliente.nombre%> <%= cliente.apellido %></p>
+    <% }) %>
+
+    <% datosCoche.forEach(vehiculo => { %>
+    <p>Tu <%= vehiculo.tipo %> es: <%= vehiculo.nombre_modelo %></p>
+    <% }) %>
+
+    <form action="/insert" method="post">
+        <div>
+            <label for="fechaI">Fecha recogida</label>
+            <input type="date" name="fechaI" id="fechaI">
+        </div>
+        <div>
+            <label for="fechaD">Fecha devolucio</label>
+            <input type="date" name="fechaD" id="fechaD">
+        </div>
+    </form>
+
+    <script src="/js/script.js"></script>
+  
+</body>

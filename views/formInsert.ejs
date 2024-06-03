@@ -1,0 +1,46 @@
+<%- include('./templates/head') %>
+
+<body>
+    <form action="/insert" method="post" id="form">
+        
+        <fieldset>
+            <legend>Datos del vehiculo</legend>
+            <div>
+                <label for="nombre">Nombre del modelo</label>
+                <input type="text" name="nombre" id="nombre">
+                
+            </div>
+            <div>
+                <label for="personas">Cantidad de personas</label>
+                <input type="text" name="personas" id="personas">
+            </div>
+            <div>
+                <label for="puertas">Numero de puertas</label>
+                <input type="text" name="puertas" id="puerta">
+            </div>
+            <div>
+                <label for="cambio">Tipo de cambio</label>
+                <input type="text" name="cambio" id="cambio">
+            </div>
+            <div>
+                <label for="maletas">Tipo de maletas</label>
+                <input type="text" name="maletas" id="maletas">
+            </div>
+            <div>
+                <label for="tipo">Qué tipo de vehiculo es</label>
+                <input type="text" name="tipo" id="tipo">
+            </div>
+            <div>
+                <label for="precio">Precio por dia</label>
+                <input type="number" name="precio" id="precio">
+            </div>
+            <div>
+                <input type="submit" value="enviar">
+                <input type="reset" value="limpiar">
+            </div>
+        </fieldset>
+        <a href="/">Volver</a>
+    </form>
+    
+</body>
+</html>

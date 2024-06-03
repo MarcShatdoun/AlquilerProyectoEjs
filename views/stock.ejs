@@ -1,0 +1,63 @@
+<%- include ('./templates/head') %>
+<body>
+    <h1>stock de vehiculos</h1>
+    <!-- <form action="/update" method="post">
+        <fieldset>
+            <legend> Actualizar cantidad en stock</legend>
+            <%# datosVehiculos.forEach(vehiculo => {%>
+            <div>
+                <label for="stock"><%# vehiculo.nombre_modelo %></label>
+                <input type="number" name="stock" id="stock" value="<%# vehiculo.unidades_totales %>">
+                <input type="hidden" name="nombre" id="nombre" value="<%# vehiculo.nombre_modelo%>">
+            </div>
+            <%# }) %>
+            <div>
+                <input type="submit" value="Actualizar">
+                <a href="/">Regresar</a>
+            </div>
+        </fieldset>
+    </form> -->
+    <form action="/update" method="post">
+        <fieldset>
+            <legend> Actualizar cantidad en stock</legend>
+            
+            <div>
+                <select name="id" id="id">
+                <% datosVehiculos.forEach(vehiculo => {%>
+                <option value="<%= vehiculo.id_modelo%>"><%= vehiculo.nombre_modelo%></option>
+                <% }) %>
+                </select> 
+                <label for="stock">Cantidad actual en stock</label>
+                <input type="number" name="stock" id="stock" >
+
+            </div>
+            
+            <div>
+                <input type="submit" value="Actualizar">
+                <a href="/">Regresar</a>
+            </div>
+        </fieldset>
+    </form>
+
+    <section class="container_table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>cantidad</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <% datosVehiculos.forEach(vehiculo => { %>
+                    <tr>
+                        <td><%= vehiculo.nombre_modelo %></td>
+                        <td><%= vehiculo.unidades_totales %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+
+        </table>
+    </section>
+</body>
+

@@ -1,0 +1,19 @@
+<%- include('./templates/head') %>
+
+<body>
+    <%- include('./templates/nav') %>
+
+    <section class="card_general witdh-page">
+        <% datosVehiculos.forEach(vehiculo => { %>
+        <article>
+            <h2><%= vehiculo.nombre_modelo %></h2>
+            <a href="/modelo/<%= vehiculo.tipo %>/<%= vehiculo.id_modelo %>">
+                <img src="/media/img/<%= vehiculo.nombre_modelo %>.webp" alt="">
+            </a>
+        </article>
+        <% }) %>
+    </section>
+
+    
+    
+</body>

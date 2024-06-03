@@ -1,0 +1,13 @@
+
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+        <% menu.forEach(vehiculo => { %>
+
+            <li>
+                <a href="/modelo/<%=vehiculo.tipo %>"><%=vehiculo.tipo %></a>
+            </li>
+        <% }) %>
+        
+    </ul>
+</nav>

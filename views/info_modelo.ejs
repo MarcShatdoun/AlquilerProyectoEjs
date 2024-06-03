@@ -1,0 +1,45 @@
+<%- include('./templates/head') %>
+
+<body>
+    <%- include('./templates/nav') %>
+
+    <% datosVehiculos.forEach(vehiculo => { %>
+    <main class="container_info width-page">
+        <section class="card_img">
+            <div>
+                <h2><%= vehiculo.nombre_modelo %></h2>
+                <div>
+                  <img src="/media/img/<%= vehiculo.nombre_modelo %>.webp" alt=""  />  
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Caracteristicas</h2>
+            <div class="card_info">
+                <div class="caracteristicas">
+                 <ul>
+                    <li><img src="/media/icons/personas.svg" alt="">personas: <%= vehiculo.personas %></li>
+                    <li> <img src="/media/icons/ac.svg" alt=""> Aire acondicionado: si</li>
+                    <li><img src="/media/icons/puertas.svg" alt=""> puertas: <%= vehiculo.puertas %></li>
+                    <li><img src="/media/icons/cambio.svg" alt=""> cambio: <%= vehiculo.cambio %></li>
+                    <li><img src="/media/icons/maletas.svg" alt=""> maletas: <%= vehiculo.maletas %></li>
+                 </ul>
+                </div>
+                <div class="precio">
+                    <p>desde<span><%= vehiculo.precioDia %>€</span>por dia</p>
+                </div>
+                <div class="bait">
+                    <p>PRECIO FINAL GRANATIZADO</p>
+                </div>
+                <a href="/identificacion/<%= vehiculo.id_modelo %>">Alquilar coche!</a>
+            </div>
+        </section>
+    </main>
+    
+
+
+    <% }) %> 
+
+    
+</body>

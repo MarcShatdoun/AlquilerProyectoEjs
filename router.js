@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 const mysql = require('mysql');
 const path = require('path');
-const { title } = require('process');
+
 
 const configMySql = {
     host: 'localhost',
@@ -13,12 +13,19 @@ const configMySql = {
 }
 
 const connMySql = mysql.createConnection(configMySql);
+try {
+    connMySql.connect();
+    console.log('Conectado');
+} catch (error) {
+    console.log(error);
+}
 
 
 // const jsonData = require('./vehicles.json');
 
 
 router.get('/', (req, res) => {
+
     const SELECT = "SELECT * FROM modelos";
     const menuSelect = "SELECT * FROM modelos group by tipo";
 
@@ -66,6 +73,30 @@ router.get('/formInsert', (req, res) =>{
     })
 })
 
+router.get('/reserva', (req, res) =>{
+    
+    res.render('reserva', {
+        title: 'Alquiler de vehiculos'
+        
+    })
+})
+router.get('/login', (req, res) =>{
+    
+    res.render('login', {
+        title: 'Crea una cuenta'
+        
+    })
+})
+router.get('/identificacion/:modeloid', (req, res) =>{
+
+    const IDMODELO = req.params.modeloid;
+
+    res.render('identificacion', {
+        title: 'Alquiler de vehiculos',
+        idmodelo: IDMODELO
+    })
+    
+})
 router.get('/modelo/:modelo', (req, res) =>{
 
     // console.log("/coche"); 
@@ -115,40 +146,16 @@ router.get('/modelo/:modelo/:modeloinfo', (req, res) =>{
     })
   
 })
-router.get('/identificacion/:modeloid', (req, res) =>{
-
-    const IDMODELO = req.params.modeloid;
-
-    res.render('identificacion', {
-        title: 'Alquiler de vehiculos',
-        idmodelo: IDMODELO
-    })
-    
-})
-router.get('/reserva', (req, res) =>{
-    
-    res.render('reserva', {
-        title: 'Alquiler de vehiculos'
-        
-    })
-})
-router.get('/login', (req, res) =>{
-    
-    res.render('login', {
-        title: 'Crea una cuenta'
-        
-    })
-})
 
 router.post('/verificacion', (req, res) =>{
     
     const { dni, id } = req.body;
-    const SELECT = `SELECT * FROM clientes WHERE dni = ${dni}`;
     const SELECTCOCHE = `SELECT * FROM modelos WHERE id_modelo = ${id}`;
     
     connMySql.query(SELECTCOCHE, (err, cocheResult) => {
         if (err) throw err;
-    
+        
+        const SELECT = `SELECT * FROM clientes WHERE dni = ${dni}`;
         connMySql.query(SELECT, (err, clienteResult) => {
             if (err) throw err;
     
@@ -162,13 +169,7 @@ router.post('/verificacion', (req, res) =>{
                 res.redirect('login');
             }
         });
-    });
-
-
-   
-        
-        
-        
+    });     
 })
    
 router.post('/insert', (req, res) => {
@@ -194,6 +195,17 @@ router.post('/update', (req, res) => {
         res.redirect('/')
     })
 
+})
+router.post('/insertAlquiler', (req, res) => {
+
+    const {fechaI, fechaD, resultado} = req.body;
+    const DIFF = `SELECT DATEDIFF(Day, ${fechaD}, ${fechaI})`
+    // console.log(DIFF);
+
+    connMySql.query(DIFF, (err, result) => {
+        if(err) throw err;
+        res.redirect('/')
+    })
 })
 
 

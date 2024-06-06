@@ -10,17 +10,18 @@
     <p>Tu <%= vehiculo.tipo %> es: <%= vehiculo.nombre_modelo %></p>
     <% }) %>
 
-    <form action="/insert" method="post">
+    <form action="/insertAlquiler" method="post">
         <div>
             <label for="fechaI">Fecha recogida</label>
-            <input type="date" name="fechaI" id="fechaI">
+            <input type="date" name="fechaI" id="fechaI" onchange="">
         </div>
         <div>
             <label for="fechaD">Fecha devolucio</label>
-            <input type="date" name="fechaD" id="fechaD">
+            <input type="date" name="fechaD" id="fechaD" onchange="">
+        </div>
+        <div>
+            <input type="submit" value="Reservar">
         </div>
     </form>
-
-    <script src="/js/script.js"></script>
   
 </body>

@@ -11,17 +11,26 @@
     <% }) %>
 
     <form action="/insertAlquiler" method="post">
+        <fieldset>
+        <legend>Indique la fecha de recogida y devolucio</legend>
         <div>
             <label for="fechaI">Fecha recogida</label>
-            <input type="date" name="fechaI" id="fechaI" onchange="">
+            <input type="date" name="fechaI" id="fechaI" min="">
         </div>
         <div>
             <label for="fechaD">Fecha devolucio</label>
-            <input type="date" name="fechaD" id="fechaD" onchange="">
+            <input type="date" name="fechaD" id="fechaD">
         </div>
+        <% datosCoche.forEach(vehiculo => { %>
+            <input type="hidden" name="id_modelo" id="id_modelo" value="<%= vehiculo.id_modelo %>">
+            <% }) %>
         <div>
             <input type="submit" value="Reservar">
         </div>
+        </fieldset>
     </form>
+    <script>
+        document.getElementById('fechaI').min = new Date().split("T")[0]; // 2024-06-07T13:05:54.000Z cuando encuentra la T  la separa en '2 objetos' y escogemos solo el que solo nos da la fecha [0]
+    </script>
   
 </body>

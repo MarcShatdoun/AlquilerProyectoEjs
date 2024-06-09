@@ -207,6 +207,49 @@ router.post('/insertAlquiler', (req, res) => {
         res.redirect('/')
     })
 })
+routerPubl.post("/disponibl", (req, res) => {
+    const request = req.body; 
+    
+    
+    const consulta = `SELECT md.unidades_totales - COUNT(al.id_modelo) AS disponible
+                        FROM alquileres al
+                        INNER JOIN modelos md
+                        ON al.id_modelo = md.id_modelo
+                        WHERE al.fecha_recogida <= '${request.fechaI}'
+                        AND al.fecha_entrega >= '${request.fechaD}'
+                        AND al.id_modelo = ${request.id_modelo};`
+    const total = `SELECT id_modelo, nombre_modelo, precioDia,
+                        '${request.fechaI}' AS fecha_recogida,'${request.fechaD}' AS fecha_entrega,
+                        precioDia * (DATEDIFF('${request.fechaI}', '${request.fechaD}')+1) AS precioTotal 
+                        FROM modelos
+                        WHERE id_modelo = ${request.id_modelo}`
+   
+    connMySQL.query(consulta, (err, resConsulta) => {
+        if (err) throw err;
+
+        if (resConsulta[0].disponible>0){   
+ 
+            connMySQL.query(total, (err, resTotal) => {
+                if (err) throw err;
+
+                req.session.request = resTotal[0]
+
+                return res.render("public/disponibl", {
+                    titulo: "Reservar",
+                    rq: req.session.request,
+                    nav
+                })
+            })
+
+        } else {
+
+            const redirectUrl = `/${request.tipo}/${request.id_modelo}?m=oops`;
+            return res.redirect(redirectUrl);
+        }
+    })
+})
+
+
 
 
 module.exports = router;

@@ -15,9 +15,9 @@ const configMySql = {
 const connMySql = mysql.createConnection(configMySql);
 try {
     connMySql.connect();
-    console.log('Conectado');
+    // console.log('Conectado');
 } catch (error) {
-    console.log(error);
+    // console.log(error);
 }
 
 
@@ -26,8 +26,12 @@ try {
 
 router.get('/', (req, res) => {
 
-    const SELECT = "SELECT * FROM modelos";
-    const menuSelect = "SELECT * FROM modelos group by tipo";
+    const SELECT = `SELECT nombre_modelo,unidades_totales, unidades_alquiladas,
+        count(al.id_modelo) * (md.precioDia) AS facturacionTotal
+     FROM modelos md
+     INNER JOIN alquileres al ON al.id_modelo = md.id_modelo
+     GROUP BY md.id_modelo, nombre_modelo, unidades_totales, unidades_alquiladas;`;
+    const menuSelect = "SELECT *FROM modelos group by tipo";
 
     connMySql.query(menuSelect, (err, result) => {
         
@@ -60,7 +64,7 @@ router.get('/stock', (req, res) =>{
             datosVehiculos: result
             
         })
-        console.log(result);
+        // console.log(result);
    })
 
 })
@@ -99,7 +103,7 @@ router.get('/identificacion/:modeloid', (req, res) =>{
 })
 router.get('/modelo/:modelo', (req, res) =>{
 
-    // console.log("/coche"); 
+    // // console.log("/coche"); 
     const SELECT = `SELECT * FROM modelos WHERE tipo = '${req.params.modelo}'`;
     const menuSelect = "SELECT * FROM modelos group by tipo";
 
@@ -122,7 +126,7 @@ router.get('/modelo/:modelo', (req, res) =>{
 })
 
 router.get('/modelo/:modelo/:modeloinfo', (req, res) =>{
-    console.log("params", req.params);
+    // console.log("params", req.params);
     const SELECT = `SELECT * FROM modelos WHERE id_modelo = '${req.params.modeloinfo} '`;
     const menuSelect = "SELECT * FROM modelos group by tipo";
 
@@ -139,7 +143,7 @@ router.get('/modelo/:modelo/:modeloinfo', (req, res) =>{
             datosVehiculos: result,
             menu: menuresult
         })
-        console.log(result);
+        // console.log(result);
        
 
      })  
@@ -149,8 +153,8 @@ router.get('/modelo/:modelo/:modeloinfo', (req, res) =>{
 
 router.post('/verificacion', (req, res) =>{
     
-    const { dni, id } = req.body;
-    const SELECTCOCHE = `SELECT * FROM modelos WHERE id_modelo = ${id}`;
+    const { dni, id_modelo } = req.body;
+    const SELECTCOCHE = `SELECT * FROM modelos WHERE id_modelo = ${id_modelo}`;
     
     connMySql.query(SELECTCOCHE, (err, cocheResult) => {
         if (err) throw err;
@@ -198,58 +202,77 @@ router.post('/update', (req, res) => {
 })
 router.post('/insertAlquiler', (req, res) => {
 
-    const {fechaI, fechaD, resultado} = req.body;
-    const DIFF = `SELECT DATEDIFF(Day, ${fechaD}, ${fechaI})`
-    // console.log(DIFF);
+    const {id_cliente, id_modelo, fecha_recogida, fecha_entrega, precioTotal} = req.body;
+    // console.log("Esto es el body4", req.body);
 
-    connMySql.query(DIFF, (err, result) => {
+    const INSERT = `INSERT INTO alquileres (id_cliente, id_modelo, fecha_recogida, fecha_entrega, facturacion) 
+        VALUES (${id_cliente}, ${id_modelo}, '${fecha_recogida}', '${fecha_entrega}', ${precioTotal})`;
+        console.log(INSERT);
+
+    connMySql.query(INSERT, (err, result) => {
         if(err) throw err;
-        res.redirect('/')
+    
+        res.redirect('alquiler_exitoso')
     })
+    
 })
-routerPubl.post("/disponibl", (req, res) => {
-    const request = req.body; 
+
+router.post("/disponible", (req, res) => {
+    const {fechaI, fechaD, id_modelo, id_cliente} = req.body; 
     
     
-    const consulta = `SELECT md.unidades_totales - COUNT(al.id_modelo) AS disponible
-                        FROM alquileres al
-                        INNER JOIN modelos md
-                        ON al.id_modelo = md.id_modelo
-                        WHERE al.fecha_recogida <= '${request.fechaI}'
-                        AND al.fecha_entrega >= '${request.fechaD}'
-                        AND al.id_modelo = ${request.id_modelo};`
-    const total = `SELECT id_modelo, nombre_modelo, precioDia,
-                        '${request.fechaI}' AS fecha_recogida,'${request.fechaD}' AS fecha_entrega,
-                        precioDia * (DATEDIFF('${request.fechaI}', '${request.fechaD}')+1) AS precioTotal 
-                        FROM modelos
-                        WHERE id_modelo = ${request.id_modelo}`
-   
-    connMySQL.query(consulta, (err, resConsulta) => {
+    const disponible = `SELECT md.unidades_totales - 
+                            (SELECT COUNT(*) 
+                            FROM alquileres 
+                            WHERE id_modelo = ${id_modelo}) AS disponible
+                        FROM modelos md 
+                        WHERE md.id_modelo = ${id_modelo};`
+
+    const total = `SELECT DISTINCT md.id_modelo, md.nombre_modelo, 
+                        '${fechaI}' AS fecha_recogida,
+                        '${fechaD}' AS fecha_entrega,
+                        precioDia * (DATEDIFF('${fechaD}', '${fechaI}')+1) AS precioTotal 
+
+                        from clientes cl 
+                        INNER JOIN alquileres al ON cl.id_cliente = al.id_cliente
+                        INNER JOIN modelos md ON al.id_modelo = md.id_modelo
+                        WHERE  md.id_modelo = ${id_modelo}
+                        `
+
+    const cliente = `SELECT * FROM clientes WHERE id_cliente = ${id_cliente}`
+    console.log(disponible);
+    console.log(total);
+
+
+    connMySql.query(cliente, (err, resCli) => {
         if (err) throw err;
+        // // console.log(res);
+       infocliente = resCli
 
-        if (resConsulta[0].disponible>0){   
- 
-            connMySQL.query(total, (err, resTotal) => {
-                if (err) throw err;
+        connMySql.query(disponible, (err, resDisp) => {
+            if (err) throw err;
+            // // console.log(res);
 
-                req.session.request = resTotal[0]
+            if (resDisp[0].disponible !== 0){   
 
-                return res.render("public/disponibl", {
-                    titulo: "Reservar",
-                    rq: req.session.request,
-                    nav
+                connMySql.query(total, (err, resTotal) => {
+                    if (err) throw err;
+
+                        res.render('factura', {
+                        title: 'factura',
+                        datosFac: resTotal,
+                        datosCliente: infocliente
+                    
+                    })
+                    
+                    
                 })
-            })
-
-        } else {
-
-            const redirectUrl = `/${request.tipo}/${request.id_modelo}?m=oops`;
-            return res.redirect(redirectUrl);
-        }
+            } else{
+                res.render('no_disponible', {
+                    title: 'no_disponible'
+                })
+            }
+        })
     })
 })
-
-
-
-
 module.exports = router;

@@ -1,0 +1,38 @@
+<% include('./templates/head') %>
+<body>
+    <h1>Factura</h1>
+    <% datosFac.forEach(info => { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Fecha de recogida</th>
+                    <th>Fecha de entrega</th>
+                    <th>Precio total</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <% datosCliente.forEach(cliente => { %>
+                    <td><%= cliente.nombre %></td>
+                    <td><%= cliente.apellido %></td>
+                    
+                    <td><%= info.fecha_recogida %></td>
+                    <td><%= info.fecha_entrega %></td>
+                    <td><%= info.precioTotal %></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form action="/insertAlquiler" method="post">
+            <input type="hidden" name="id_cliente" id="id_cliente" value="<%= cliente.id_cliente %>">
+            <input type="hidden" name="id_modelo" id="id_modelo" value="<%= info.id_modelo %>">
+            <input type="hidden" name="fecha_recogida" id="fecha_recogida" value="<%= info.fecha_recogida %>">
+            <input type="hidden" name="fecha_entrega" id="fecha_entrega" value="<%= info.fecha_entrega %>">
+            <input type="hidden" name="precioTotal" id="precioTotal" value="<%= info.precioTotal %>">
+            <input type="submit" value="Alquilar">
+        </form>
+        <% }) %>
+    <% }) %>
+        
+</body>

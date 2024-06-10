@@ -10,27 +10,35 @@
     <p>Tu <%= vehiculo.tipo %> es: <%= vehiculo.nombre_modelo %></p>
     <% }) %>
 
-    <form action="/insertAlquiler" method="post">
+    <form action="/disponible" method="post">
         <fieldset>
         <legend>Indique la fecha de recogida y devolucio</legend>
         <div>
             <label for="fechaI">Fecha recogida</label>
-            <input type="date" name="fechaI" id="fechaI" min="">
+            <input type="date" name="fechaI" id="fechaI" min="<%- new Date().toISOString().split('T')[0] %>" required>
         </div>
         <div>
             <label for="fechaD">Fecha devolucio</label>
-            <input type="date" name="fechaD" id="fechaD">
+            <input type="date" name="fechaD" id="fechaD" min="<%- new Date().toISOString().split('T')[0] %>" required>
         </div>
+
         <% datosCoche.forEach(vehiculo => { %>
             <input type="hidden" name="id_modelo" id="id_modelo" value="<%= vehiculo.id_modelo %>">
             <% }) %>
+        <% datosCliente.forEach(cliente => { %>
+            <input type="hidden" name="id_cliente" id="id_cliente" value="<%= cliente.id_cliente %>">    
+
         <div>
-            <input type="submit" value="Reservar">
+            <%}) %>
+            <input type="submit" value="Calcula tu alquiler">
         </div>
         </fieldset>
     </form>
-    <script>
-        document.getElementById('fechaI').min = new Date().split("T")[0]; // 2024-06-07T13:05:54.000Z cuando encuentra la T  la separa en '2 objetos' y escogemos solo el que solo nos da la fecha [0]
-    </script>
+     <script>
+        // document.getElementById('fechaI').min = new Date().toISOString.split("T")[0]; // 2024-06-07T13:05:54.000Z cuando encuentra la T  la separa por este en '2 objetos' y escogemos solo el que solo nos da la fecha [0]
+        document.getElementById('fechaI').addEventListener('change', function() {
+        document.getElementById('fechaD').min = this.value;
+});
+    </script> 
   
 </body>

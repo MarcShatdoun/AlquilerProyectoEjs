@@ -84,11 +84,11 @@ router.get('/reserva', (req, res) =>{
         
     })
 })
-router.get('/login', (req, res) =>{
+router.get('/register', (req, res) =>{
     
-    res.render('login', {
+    
+    res.render('register', {
         title: 'Crea una cuenta'
-        
     })
 })
 router.get('/identificacion/:modeloid', (req, res) =>{
@@ -162,7 +162,7 @@ router.post('/verificacion', (req, res) =>{
         const SELECT = `SELECT * FROM clientes WHERE dni = ${dni}`;
         connMySql.query(SELECT, (err, clienteResult) => {
             if (err) throw err;
-    
+            
             if (clienteResult.length !== 0) {
                 res.render('reserva', {
                     title: 'Reserva a estos precios',
@@ -170,7 +170,8 @@ router.post('/verificacion', (req, res) =>{
                     datosCoche: cocheResult // Aquí convertimos el objeto en un array
                 });
             } else {
-                res.redirect('login');
+                res.render('/register')
+                
             }
         });
     });     
@@ -212,7 +213,7 @@ router.post('/insertAlquiler', (req, res) => {
     connMySql.query(INSERT, (err, result) => {
         if(err) throw err;
     
-        res.redirect('alquiler_exitoso')
+        res.redirect('/login')
     })
     
 })
@@ -273,6 +274,21 @@ router.post("/disponible", (req, res) => {
                 })
             }
         })
+    })
+})
+
+router.post("/insertUsuario", (req, res) => {
+
+    const {nombre, apellido, dni, email, tel, poblacion, password} = req.body;
+    console.log(req.body);
+
+    const INSERT = `INSERT INTO clientes (nombre, apellido, dni, tel, email, poblacio, password) VALUES ('${nombre}', '${apellido}', '${dni}', '${tel}', '${email}', '${poblacion}', '${password}')`;
+    console.log(INSERT);
+
+    connMySql.query(INSERT, (err, result) => {
+        if(err) throw err;
+
+        res.redirect('/')
     })
 })
 module.exports = router;

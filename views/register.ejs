@@ -1,0 +1,37 @@
+<%- include('./templates/head') %>
+<body>
+    <h1>Crear Cuenta</h1>
+    <form action="/insertUsuario" method="post">
+        <div>
+            <label for="nombre">Nombre</label>
+            <input type="text" name="nombre" id="nombre">
+        </div>
+        <div>
+            <label for="apellido">Apellido</label>
+            <input type="text" name="apellido" id="apellido">
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
+        <div>
+            <label for="dni">DNI</label>
+            <input type="text" name="dni" id="dni">
+        </div>
+        <div>
+            <label for="telefono">Telefono</label>
+            <input type="text" name="tel" id="tel">
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+        <div>
+            <label for="poblacion">Poblacion</label>
+            <input type="text" name="poblacion" id="poblacion">
+        </div>
+        <div>
+            <input type="submit" value="Crear Cuenta">
+        </div>
+    </form>
+</body>
